@@ -100,5 +100,7 @@ ENV/
 # mypy
 .mypy_cache/
 
-$ mac temps
+# mac temps
 .DS_Store
+
+
