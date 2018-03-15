@@ -10,7 +10,7 @@ TIMES = 1000
 
 # open files
 f = open("random_str_list_1000000.json", 'r')
-str_list = json.load(f)
+sorted_str_list = json.load(f)
 f.close()
 
 f = open("random_search_list_1000000.json", "r")
@@ -20,8 +20,8 @@ f.close()
 # start to measure time
 all_start_time = time.time()
 
-str_list.sort()
-list_length = len(str_list)
+sorted_str_list.sort()
+list_length = len(sorted_str_list)
 
 sort_time = time.time() - all_start_time
 
@@ -31,13 +31,10 @@ for i in range(TIMES):
     # each bisect-search
     start_time = time.time()
     search_str = search_list[i]
-    insert_point = bisect.bisect_left(str_list, search_str)
-    end_point = insert_point
-    while str_list[end_point].startswith(search_str):
-        end_point += 1
-        if end_point > list_length:
-            break
-    ans_list = str_list[insert_point:end_point]
+    top_point = bisect.bisect_left(sorted_str_list, search_str)
+    end_point = bisect.bisect_left(sorted_str_list, search_str[:-1]+chr(ord(search_str[-1])+1))
+
+    ans_list = sorted_str_list[top_point:end_point]
 
     elapsed_time = time.time() - start_time
     print("elapsed time:", elapsed_time, "[sec]")
